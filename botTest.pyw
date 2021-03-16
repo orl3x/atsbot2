@@ -85,6 +85,7 @@ def scanProduct():
 
     #GET THE SAVED MODEL FROM THE DB
     actualModel = hostDB.getModelFromDB()
+
     #CREATE, SET AND CONFIGURE MODEL LABEL
     modelLabel = tk.Label(root, text="Modelo actual: "+str(actualModel), borderwidth=1, relief="solid")
     modelLabel.config(font=('Franklin Gothic Medium', 20), fg="#008891", bg="#e7e7de", highlightbackground="#008891")
@@ -188,7 +189,6 @@ def changeModel():
     modelWindow.mainloop()
 
 
-
 def getModelFromDB():
     if hostDB.getModelFromDB() is not None:
         model = hostDB.getModelFromDB()
@@ -240,7 +240,15 @@ def mes():
         model = pyperclip.paste()
         model = eval(model.replace('-',''))
         modelFamily = model
-        print("ATS2 model family = "+modelFamily.model)
+        previousModel = hostDB.getModelFromDB();
+        actualModel = modelFamily.model
+        print("ACTUAL MODEL IS : "+actualModel)
+        print("PREVIOUS MODEL IS : "+ previousModel)
+        if actualModel == previousModel:
+            print("Same models, no problem")
+        else:
+            pag.alert(title="MODELOS DIFERENTES", text="El modelo que estaba probando es el "+previousModel+" y la pieza escaneada corresponde al modelo "+actualModel+" ¿Desea cambiar de modelo?")
+            hostDB.writeModelInDB(actualModel)
         showDesktop()
         if modelFamily.model[0:3] == "ESD":
             pag.alert(title="CONECTAR TRANSFORMADOR",
@@ -310,6 +318,8 @@ def showDesktop():
     time.sleep(0.2)
     pag.hotkey("win","d")
 
+
+# INITIALIZING REQUIRED FUNCTIONS
 print(testWithoutWO)
 killTasks()
 scanProduct()

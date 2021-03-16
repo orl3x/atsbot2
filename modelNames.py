@@ -24,6 +24,9 @@ class Driver():
     def getDWSwitch(self):
         return self.dwSwitch
 
+    def getName(self):
+        return self.model
+
 #DEFINE MODEL OBJECTS
 
 ################################################################################################

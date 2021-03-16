@@ -240,15 +240,17 @@ def mes():
         model = pyperclip.paste()
         model = eval(model.replace('-',''))
         modelFamily = model
-        previousModel = hostDB.getModelFromDB();
-        actualModel = modelFamily.model
-        print("ACTUAL MODEL IS : "+actualModel)
-        print("PREVIOUS MODEL IS : "+ previousModel)
-        if actualModel == previousModel:
-            print("Same models, no problem")
-        else:
-            pag.alert(title="MODELOS DIFERENTES", text="El modelo que estaba probando es el "+previousModel+" y la pieza escaneada corresponde al modelo "+actualModel+" ¿Desea cambiar de modelo?")
-            hostDB.writeModelInDB(actualModel)
+##        global previousModel
+##        previousModel = hostDB.getModelFromDB()
+##        global actualModel
+##        actualModel = modelFamily.model
+        #print("ACTUAL MODEL IS : "+actualModel)
+        #print("PREVIOUS MODEL IS : "+ previousModel)
+        # if actualModel == previousModel:
+        #     print("Same models, no problem")
+        # else:
+        #     pag.alert(title="MODELOS DIFERENTES", text="El modelo que estaba probando es el "+previousModel+" y la pieza escaneada corresponde al modelo "+actualModel+" ¿Desea cambiar de modelo?")
+        #     hostDB.writeModelInDB(actualModel)
         showDesktop()
         if modelFamily.model[0:3] == "ESD":
             pag.alert(title="CONECTAR TRANSFORMADOR",
@@ -263,6 +265,38 @@ def mes():
     else:
         return getModelFromDB()
 
+def contentionWindow():
+    global actualModel
+    global previousModel
+    contentionWindow = tk.Tk()
+    contentionWindow.title("Los modelos son diferentes")
+    contentionWindow.attributes("-fullscreen",True)
+
+    mainTitle = tk.Label(contentionWindow, text="MODELOS DISTINTOS")
+    mainTitle.config(font=("TAHOMA",70), fg="BLUE", bg="teal")
+
+    textForPreviousModel = tk.Label(contentionWindow, text="El modelo que estaba cargado es el ")
+    textForPreviousModel.config(font=("ARIAL",35), fg="BLACK", bg="pink")
+
+    previousModelLabel = tk.Label(contentionWindow, text=previousModel)
+    previousModelLabel.config(font=("ARIAL",35, 'bold'), fg="RED", bg="yellow")
+
+    textForActualModel= tk.Label(contentionWindow, text="La pieza actual corresponde al modelo ")
+    textForActualModel.config(font=("ARIAL", 35), fg="BLACK", bg="green")
+
+    actualModelLabel = tk.Label(contentionWindow, text=actualModel)
+    actualModelLabel.config(font=("ARIAL", 35, 'bold'), fg="RED", bg="purple")
+
+    questionLabel = tk.Label(contentionWindow, text="¿Desea realizar el cambio de modelo?")
+    questionLabel.config(font=("ARIAL", 35), fg="BLUE", anchor="center", bg="yellow")
+
+    mainTitle.grid(column=0, row=0, columnspan=2)
+    textForPreviousModel.grid(column=0, row=1)
+    previousModelLabel.grid(column=1, row=1)
+    textForActualModel.grid(column=0, row=2)
+    actualModelLabel.grid(column=1, row=2)
+    questionLabel.grid(column=0, row=3, columnspan=2)
+    contentionWindow.mainloop()
 
 
 def ats():
@@ -323,12 +357,11 @@ def showDesktop():
 print(testWithoutWO)
 killTasks()
 scanProduct()
-
 if testWithoutWO is False:
     model = mes()
 else:
     model = getModelFromDB()
-
+# contentionWindow()
 print("Screenshot location is "+model.ssAts1)
 
 modelAtsFile = model.ssAts1 if AtsModel() else model.ssAts2

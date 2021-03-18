@@ -7,7 +7,7 @@ import FrameCurrent
 import re
 
 
-guiPasswords = {'201101','2020', '5313', 'orlando'}
+guiPasswords = {'201101','2020', '5313', '040301'}
 bgColor= "#e7e7de"
 entryBg = "#f8f1f1"
 textColor = entryBg
@@ -463,6 +463,7 @@ def showDesktop():
 
 # INITIALIZING REQUIRED FUNCTIONS
 def main():
+    global model
     killTasks()
     scanProduct()
     if testWithoutWO is False:

@@ -8,6 +8,7 @@ import re
 
 
 guiPasswords = {'201101','2020', '5313', '040301','2364'}
+
 bgColor= "#e7e7de"
 entryBg = "#f8f1f1"
 textColor = entryBg
